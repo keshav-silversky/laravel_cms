@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,3 +25,5 @@ Route::get('/master',function(){
 
     return view('components.master');
 });
+Route::get('/admin',[AdminController::class,'index'])->name('admin.index');
+Route::get('/post',[PostController::class,'show'])->name('post');
