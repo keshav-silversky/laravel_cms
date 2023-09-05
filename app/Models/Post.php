@@ -9,10 +9,11 @@ use Illuminate\Mail\Mailables\Content;
 class Post extends Model
 {
     use HasFactory;
+    // protected $guarded = ['id'];
     protected $fillable = [
         'image',
         'title',
-        'Content',
+        'content',
         'user_id',
     ];
 
@@ -21,5 +22,10 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function setImageAttribute($value)
+    {
+        $this->attributes['image'] = basename($value);
+      
+    }
 
 }
