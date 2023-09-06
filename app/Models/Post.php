@@ -22,10 +22,29 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function setImageAttribute($value)
+
+    public function getImageAttribute($value)
     {
-        $this->attributes['image'] = basename($value);
-      
+      if(filter_var($value,FILTER_VALIDATE_URL))
+      {
+        return $value;
+      }
+      else
+      {
+        return asset("storage/uploads/$value");
+      }
+
+    }
+    public function setImageAttribute($value)
+    {  
+        if(filter_var($value,FILTER_VALIDATE_URL))
+        {
+            $this->attributes['image'] = $value;
+        }
+        else
+        {
+       $this->attributes['image'] = basename($value);      
+        }
     }
 
 }

@@ -36,7 +36,7 @@
           <tr>
             <td>{{$post->id}}</td>
             <td>{{$post->user->name}}</td>
-            <td> <img src={{public_path("$post->image")}} alt="" height="40px" width="40px"></td>
+            <td> <img src="{{$post->image}}" alt="" height="40px" width="40px"></td> 
             <td>{{$post->title}}</td>
             <td>{{$post->content}}</td>
             <td>{{$post->created_at->diffForHumans()}}</td>

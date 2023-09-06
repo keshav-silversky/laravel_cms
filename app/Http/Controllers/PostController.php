@@ -21,7 +21,7 @@ class PostController extends Controller
 
         public function index()
         {
-            $posts = Post::all();
+            $posts = Post::orderBy('id','desc')->get();
             return view('admin.post.index',['posts' => $posts]);
         }
 
@@ -51,7 +51,8 @@ class PostController extends Controller
         $file = $request->file('image');
         // $inputs['image'] = "asdfsdfasdfs";
         // $file->move('images',$filesave);
-         $filesave=$file->store('public');
+
+         $filesave=$file->store('uploads');
 
 
         //  echo basename($filesave);
