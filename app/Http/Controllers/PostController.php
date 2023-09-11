@@ -17,16 +17,22 @@ class PostController extends Controller
         $this->middleware('auth');
             
     }
+    
 
+     public function index() 
+     {
+        //  $posts = Post::orderBy('id','desc')->get();
+        // $posts = auth()->user()->posts;
+        $posts = auth()->user()->posts()->paginate(5);
 
-        public function index()
-        {
-            $posts = Post::orderBy('id','desc')->get();
-            return view('admin.post.index',['posts' => $posts]);
-        }
+            // ddd($posts);
+        // $posts = Post::all();
+         return view('admin.post.index',['posts' => $posts]);
+     }
 
-    public function show(Post $post)
+    public function show(Post $post) // Route Model Binding
     {
+      
         return view('blog-post',['post' => $post]);
     }
     public function create()
@@ -40,11 +46,11 @@ class PostController extends Controller
     |
 */
 
-    public function store(Request $request)
+    public function store(Request $request) 
     {
         $inputs = $request->validate([
             'title' => 'required | min:3 | max:50',
-            'content' => 'required | min:8 | max:200',
+            'content' => 'required | min:3 | max:200',
             'image' => 'required | mimes:jpg,jpeg,png'
         ]);
 
@@ -69,8 +75,55 @@ class PostController extends Controller
             ]
         ); 
         return redirect()->back()->with('message',"Post Created Successfully");
-        
-        
+    
+    }
+
+    public function destroy(Post $post) // Route Model Binding
+    {
+        $this->authorize('view',$post);
+
+        Post::findOrFail($post->id)->delete();
+        session()->flash('message','Post Deleted Successfully');
+        return back();
+    }
+
+    public function edit(Post $post)
+    {
+        // $this->authorize('view',$post);
+        return view('admin.post.edit',['post' => $post]);
+    }
+
+    public function update(Request $request,Post $post)  // Route Model Binding
+    {
+       $inputs = request()->validate([
+
+        'title' => 'required | min:3 | max:50',
+        // 'content' => 'required | min:3',
+        'image' => 'mimes:png,jpg,jpeg'
+       ]);
+       
+       if($file = $request->file('image'))
+       {   
+        $filesave = $file->store('uploads'); 
+        $post->image=$filesave;
+       }
+
+ 
+       $post->title = $request->title;
+       $post->content = $request->content;
+
+
+       $this->authorize('update',$post);
+
+       auth()->user()->posts()->save($post);
+    // $post->update([$post]);
+
+       $request->session()->flash('update','Post Updated Successfully');
+
+       return redirect()->route('all.post');
+
+
 
     }
+
 }

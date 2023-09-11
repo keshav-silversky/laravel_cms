@@ -18,7 +18,7 @@ use App\Http\Middleware\AdminMiddleware;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+// Route::patch('/admin/post/update/{post}',[PostController::class,'update'])->name('admin.post.update');
 
 Auth::routes();
  
@@ -30,6 +30,13 @@ Auth::routes();
     Route::get('/admin/post/index',[PostController::class,'index'])->name('all.post');
     Route::get('/admin/post/create',[PostController::class,'create'])->name('create.post');
     Route::post('/post/create',[PostController::class,'store'])->name('post.create');
+
+    Route::delete('/admin/post/delete/{post}',[PostController::class,'destroy'])->name('admin.post.destroy');
+    Route::get('/admin/post/edit/{post}',[PostController::class,'edit'])->name('post.edit');
+    Route::patch('/admin/post-update/{post}',[PostController::class,'update'])->name('admin.post.update');
+
+
+    
     
     
     
