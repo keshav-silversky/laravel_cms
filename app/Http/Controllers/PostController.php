@@ -24,6 +24,7 @@ class PostController extends Controller
         //  $posts = Post::orderBy('id','desc')->get();
         // $posts = auth()->user()->posts;
         $posts = auth()->user()->posts()->paginate(5);
+        // dd($posts);
 
             // ddd($posts);
         // $posts = Post::all();
@@ -32,7 +33,6 @@ class PostController extends Controller
 
     public function show(Post $post) // Route Model Binding
     {
-      
         return view('blog-post',['post' => $post]);
     }
     public function create()
@@ -60,7 +60,7 @@ class PostController extends Controller
 
          $filesave=$file->store('uploads');
 
-
+        dd($filesave);
         //  echo basename($filesave);
         $user = auth()->user();   
 

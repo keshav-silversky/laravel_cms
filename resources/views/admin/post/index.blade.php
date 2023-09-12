@@ -81,7 +81,7 @@
 
      
         </table>
-        {{$posts->links('vendor.pagination.simple-bootstrap-4')}}
+        {{$posts->links()}}
       </div>
     </div>
   </div>
