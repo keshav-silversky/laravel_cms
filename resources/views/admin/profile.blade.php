@@ -95,13 +95,18 @@
                             </div>
                         </div>
 
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-success">
-                                 Update
-                                </button>
-                            </div>
-                        </div>
+                 @can('update', $user)
+                 <div class="row mb-0">
+                    <div class="col-md-6 offset-md-4">
+                        <button type="submit" class="btn btn-success">
+                         Update
+                        </button>
+                    </div>
+                </div>
+                @else  <button  class="btn btn-success" disabled>
+                    Update
+                   </button>
+                 @endcan
                     </form>
                 </div>
             </div>
@@ -109,6 +114,96 @@
     </div>
 </div>  
 
+<br>
+<h1>User Role</h1>
 
+@if(session('attached'))
+<span class="alert alert-success">{{session('attached')}}</span>
+@elseif(session('already_attached'))
+<span class="alert alert-warning">{{session('already_attached')}}</span>
+@endif
+@if(session('detached'))
+<span class="alert alert-success">{{session('detached')}}</span>
+
+@endif
+     
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Roles </h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive  text-center">
+      
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Option</th>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Slug</th>
+              <th colspan="2">Action</th>
+
+      
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+                <th>Option</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Slug</th>
+                <th colspan="2">Action</th>
+            </tr>
+          </tfoot>
+          
+     
+          @foreach($roles as $role)
+          <tr>
+            <td><input type="checkbox" 
+                @if($user->UserHasRole($role->name) ) 
+                checked  
+                @endif
+                ></td>
+            <td>{{$role->id}}</td>
+            <td>{{$role->name}}</td>
+            <td>{{$role->slug}}</td>
+            <td>
+              @if($user->UserHasRole($role->name) == false)
+                <form method="post" action={{route('user.role.attach',$user)}}>
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="role" value="{{$role->id}}">
+                <button class="btn btn-success">Attach</button>
+            </form>
+            @else
+            <button class="btn btn-success" disabled>Attach</button>
+            @endif
+            </td>
+            <td>
+              @if($user->UserHasRole($role->name)==true)
+              <form method="post" action={{route('user.role.detach',$user)}}>
+                @csrf
+                @method('DELETE')
+                <input type="hidden" name="role" value={{$role->id}}>
+              <button type="submit" class="btn btn-danger">Detach</button>
+            </form>
+            @else
+            <button type="submit" class="btn btn-danger" disabled>Detach</button>
+            @endif
+
+          </td>
+            
+
+            </tr>
+          @endforeach
+   
+
+
+     
+        </table>
+   
+      </div>
+    </div>
+  </div>
   @endsection
 </x-admin-master>

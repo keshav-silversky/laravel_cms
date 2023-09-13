@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head> 
+  {{-- Sweet Alert --}}
+  {{-- <script src="
+  https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.all.min.js
+  "></script>
+  <link href="
+  https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.min.css
+  " rel="stylesheet">   --}}
+  {{-- Sweet Alert --}}
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -59,7 +67,11 @@
 
       @if(auth()->user()->UserHasRole('admin'))
       <x-admin-sidebar-users-links></x-admin-sidebar-users-links>
+      <x-admin-sidebar-auth-links></x-admin-sidebar-auth-links>
       @endif
+      
+     
+   
 
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">

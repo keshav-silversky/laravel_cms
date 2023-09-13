@@ -8,6 +8,8 @@ use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,8 +42,7 @@ Auth::routes();
     Route::get('/admin/post/edit/{post}',[PostController::class,'edit'])->name('post.edit');
     Route::patch('/admin/post-update/{post}',[PostController::class,'update'])->name('admin.post.update');
 
-    Route::get('/admin/profile/{user}',[UserController::class,'show'])->name('admin.profile');
-    Route::put('/admin/profile/update/{user}',[UserController::class,'update'])->name('admin.profile.update');
+
 
 
     // Route::get('admin/users',[UserController::class,'index'])->name('admin.users');
@@ -49,5 +50,28 @@ Auth::routes();
 
     Route::middleware('roleAuthenticate:admin')->group(function(){
         Route::get('admin/users',[UserController::class,'index'])->name('admin.users');
+        Route::put('admin/{user}/attach',[UserController::class,'attach'])->name('user.role.attach');
+        Route::delete('admin/{user}/detach',[UserController::class,'detach'])->name('user.role.detach');
     });
-    s
+
+Route::middleware('can:view,user')->group(function(){
+
+    Route::get('/admin/profile/{user}',[UserController::class,'show'])->name('admin.profile');
+
+
+});
+Route::put('/admin/profile/update/{user}',[UserController::class,'update'])->can('update','user')->name('admin.profile.update');
+
+
+
+Route::get('/roles',[RoleController::class,'index'])->name('roles.index');
+Route::post('/roles/create',[RoleController::class,'store'])->name('role.create');
+Route::delete('/roles/{role}/destroy',[RoleController::class,'destroy'])->name('role.destroy');
+Route::get('/roles/{role}/edit',[RoleController::class,'edit'])->name('role.edit');
+Route::put('/roles/{role}/update',[RoleController::class,'update'])->name('role.update');
+
+
+Route::get('/permissions',[PermissionController::class,'index'])->name('permissions.index');
+
+
+    

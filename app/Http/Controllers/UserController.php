@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use App\Models\Role;
+use Error;
+use Throwable;
 
 class UserController extends Controller
 {
@@ -12,13 +15,16 @@ class UserController extends Controller
     {
         $users = User::all();
 
+    
+
         return view('admin.user.index',['users' => $users]);
     }
 
 
     public function show(User $user)
     {
-        return view('admin.profile',['user' => $user]);
+        $roles = Role::all();
+        return view('admin.profile',['user' => $user,'roles' => $roles]);
     }
     public function update(User $user,Request $request)
     {
@@ -53,4 +59,37 @@ class UserController extends Controller
         return back();
 
     }
+
+    public function attach(User $user)
+    {
+   
+        try
+        {
+        $user->roles()->attach([request('role')]);
+        session()->flash('attached','Role Attached ');
+        return back();
+        }
+        catch(Throwable $e)
+        {
+            session()->flash('already_attached','Role Already Attached');
+            return back();
+                
+        }
+    }
+    public function detach(User $user)
+    {
+       $role = $user->roles()->whereId(request('role'))->first();
+        if($role->name =='Admin')
+        {
+            session()->flash('already_attached','Cannot Detach Admin Role');
+            return back();
+        }
+        
+        $user->roles()->detach([request('role')]);
+        session()->flash('detached','Role Detached Successfully');
+        return back();
+    }
+
+
+
 }
