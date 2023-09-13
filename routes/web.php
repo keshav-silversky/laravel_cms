@@ -42,5 +42,12 @@ Auth::routes();
 
     Route::get('/admin/profile/{user}',[UserController::class,'show'])->name('admin.profile');
     Route::put('/admin/profile/update/{user}',[UserController::class,'update'])->name('admin.profile.update');
-    
-    
+
+
+    // Route::get('admin/users',[UserController::class,'index'])->name('admin.users');
+    Route::delete('admin/users/delete/{user}',[UserController::class,'destroy'])->name('admin.user.delete');
+
+    Route::middleware('roleAuthenticate:admin')->group(function(){
+        Route::get('admin/users',[UserController::class,'index'])->name('admin.users');
+    });
+    s

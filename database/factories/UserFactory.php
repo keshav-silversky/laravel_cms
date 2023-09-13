@@ -18,6 +18,8 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
+            'username' => fake()->userName(),
+            'avatar' => 'KBpKkhy0mzvwIjFU6mpW8Gkum713K0PBwJyZ74N3.png',
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),

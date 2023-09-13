@@ -60,7 +60,7 @@ class PostController extends Controller
 
          $filesave=$file->store('uploads');
 
-        dd($filesave);
+
         //  echo basename($filesave);
         $user = auth()->user();   
 

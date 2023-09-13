@@ -94,15 +94,8 @@
 
 
   @section('scripts')
-
   {{-- <script src="{{asset('vendor/datatables/jquery.dataTables.min.js')}}"></script> --}}
   <script src="{{asset('vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
   <script src="{{asset('js/demo/datatables-demo.js')}}"></script>
   @endsection
 </x-admin-master>
-
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="">
- 
