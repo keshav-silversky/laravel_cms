@@ -1,0 +1,16 @@
+         @foreach($role->permissions as $permission)
+          <tr>
+            <td>
+              <input 
+              type="checkbox"
+              {{-- @if($permission->slug == $permission->slug)
+              checked
+              @endif --}}>
+              </td>
+            <td>{{$permission->id}}</td>
+            <td>{{$permission->name}}</td>
+            <td>{{$permission->slug}}</td>
+            <td><button class="btn btn-danger">Delete</button></td>
+
+          </tr>
+          @endforeach

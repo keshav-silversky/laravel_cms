@@ -25,7 +25,7 @@ use App\Http\Controllers\PermissionController;
 
 Auth::routes();
  
-    Route::get('/admin',[AdminController::class,'index'])->middleware('admin')->name('admin.index');
+    Route::get('/admin',[AdminController::class,'index'])->name('admin.index');
     Route::get('/', [HomeController::class, 'index'])->name('home');
   
     Route::get('/post/{post}',[PostController::class,'show'])->middleware('admin')->name('post');
@@ -64,14 +64,33 @@ Route::put('/admin/profile/update/{user}',[UserController::class,'update'])->can
 
 
 
-Route::get('/roles',[RoleController::class,'index'])->name('roles.index');
+
+Route::middleware('roleAuthenticate:admin')->group(function(){
+    Route::get('/roles',[RoleController::class,'index'])->name('roles.index');
 Route::post('/roles/create',[RoleController::class,'store'])->name('role.create');
 Route::delete('/roles/{role}/destroy',[RoleController::class,'destroy'])->name('role.destroy');
 Route::get('/roles/{role}/edit',[RoleController::class,'edit'])->name('role.edit');
 Route::put('/roles/{role}/update',[RoleController::class,'update'])->name('role.update');
 
+});
 
-Route::get('/permissions',[PermissionController::class,'index'])->name('permissions.index');
+
+Route::middleware('roleAuthenticate:admin')->group(function(){
+    Route::get('/permissions',[PermissionController::class,'index'])->name('permissions.index');
+Route::post('/permissions/create',[PermissionController::class,'store'])->name('permission.create');
+Route::delete('/permissions/{permission}/destroy',[PermissionController::class,'destroy'])->name('permission.destroy');
+Route::get('/permissions/{permission}/edit',[PermissionController::class,'edit'])->name('permission.edit');
+Route::put('/permissions/{permission}/update',[PermissionController::class,'update'])->name('permission.update');
+
+Route::put('/roles/{role}/permission/attach',[RoleController::class,'attach'])->name('role.permission.attach');
+Route::delete('/roles/{role}/permission/detach',[RoleController::class,'detach'])->name('role.permission.detach');
+
+});
+
+
+
+
+
 
 
     

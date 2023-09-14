@@ -300,9 +300,9 @@
             <div class="topbar-divider d-none d-sm-block"></div>
 
             <!-- Nav Item - User Information -->
-       <x-admin-user-information>
+       <x-admin-user-information>  </x-admin-user-information>
         
-       </x-admin-user-information>
+   
 
           </ul>
 
@@ -319,10 +319,8 @@
 
         </div>
         <!-- /.container-fluid -->
-
       </div>
       <!-- End of Main Content -->
-
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">

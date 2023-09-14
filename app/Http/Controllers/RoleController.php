@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use Illuminate\Support\Str;
@@ -24,7 +25,7 @@ class RoleController extends Controller
                 'name' => Str::ucfirst(Str::lower($request->name)),
                 'slug' => Str::lower($request->name)
             ]);    
-        session()->flash('created','Role Created Successsfully');
+        session()->flash('created','Role Created Successfully');
         return back();
             }
             catch(Throwable $e)
@@ -36,21 +37,21 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
-        return view('admin.roles.edit',['role'=>$role]);
+        return view('admin.roles.edit',
+        [
+            'role'=>$role,
+            'permissions' => Permission::get()
+    ]);
     }
 
     public function update(Role $role,Request $request)
     {
         $request->validate([
-            'name' => ['required' , 'min:3']
+            'name' => ['required' , 'min:3',"unique:roles,name,{$role->id}"]
         ]);
-       
-       
 
         $role->name = Str::ucfirst(Str::lower($request->name));
         $role->slug = Str::lower($request->name);
-     
-
 
         if($role->isDirty('name'))  // isClean() is work opposite to this
         {
@@ -68,6 +69,23 @@ class RoleController extends Controller
 
         
     }
+
+
+
+    public function attach(Role $role)
+    {
+        $role->permissions()->attach(request('permission'));
+        session()->flash('attached',"Permission Attached Successfully");
+        return back();
+    }
+    public function detach(Role $role)
+    {
+        $role->permissions()->detach(request('permission'));
+        session()->flash('detached',"Permission Detached Successfully");
+        return back();
+    }
+
+
 
 
 
